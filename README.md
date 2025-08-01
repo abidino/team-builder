@@ -1,6 +1,6 @@
-# Team Builder - Nuxt 3 Application
+# Team Builder - Nuxt 4 Application
 
-A modern, responsive team builder application built with Nuxt 3, Vue 3, and Tailwind CSS. Create balanced teams with intelligent player distribution and strength-based algorithms.
+A modern, responsive team builder application built with Nuxt 4, Vue 3, and Tailwind CSS. Create balanced teams with intelligent player distribution and strength-based algorithms.
 
 ## ✨ Features
 
@@ -14,7 +14,7 @@ A modern, responsive team builder application built with Nuxt 3, Vue 3, and Tail
 
 ## 🚀 Technologies
 
-- **Nuxt 3** - The Intuitive Vue Framework
+- **Nuxt 4** - The Intuitive Vue Framework
 - **Vue 3** - Composition API with `<script setup>`
 - **TypeScript** - Type safety and better developer experience
 - **Tailwind CSS** - Utility-first CSS framework
@@ -130,7 +130,7 @@ When importing players from Excel, use this format:
 | Player Name | Strength (0-10) | Position (Optional) | Additional Strengths |
 
 - **Column A**: Player name (required)
-- **Column B**: Base strength value 0-10 (required)
+- **Column B**: Arrived Status (required)
 - **Column C**: Position like "Forward", "Midfielder" etc. (optional)
 - **Column D+**: Additional strength values for weighted average calculation (optional)
 
@@ -221,7 +221,7 @@ The application uses a cohesive design system:
 
 ---
 
-Built with ❤️ using Nuxt 3 and modern web technologies.
+Built with ❤️ using Nuxt 4 and modern web technologies.
 
 # yarn
 
