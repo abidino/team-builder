@@ -127,7 +127,7 @@ When importing players from Excel, use this format:
 
 | Column A    | Column B        | Column C            | Column D+            |
 | ----------- | --------------- | ------------------- | -------------------- |
-| Player Name | Strength (0-10) | Position (Optional) | Additional Strengths |
+| Player Name | Arrived Status | Position (Optional) | Additional Strengths |
 
 - **Column A**: Player name (required)
 - **Column B**: Arrived Status (required)
