@@ -87,7 +87,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import * as XLSX from "xlsx";
+import readExcelFile from "read-excel-file";
 import { Player, Position } from "~/types";
 import { Calculator } from "~/utils";
 
@@ -140,78 +140,53 @@ const processFile = async () => {
   }
 };
 
-const parseExcelFile = (file: File): Promise<Player[]> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+const parseExcelFile = async (file: File): Promise<Player[]> => {
+  try {
+    // Use read-excel-file which is more compatible with Vercel
+    const rows = await readExcelFile(file);
 
-    reader.onload = (e) => {
-      try {
-        const data = e.target?.result;
-        if (!data) {
-          reject(new Error("No data found"));
-          return;
-        }
+    if (!rows || rows.length === 0) {
+      throw new Error("No data found in Excel file");
+    }
 
-        const workbook = XLSX.read(data, { type: "binary" });
-        const sheetName = workbook.SheetNames[0];
+    // Skip header row (first row)
+    const dataRows = rows.slice(1);
+    const players: Player[] = [];
 
-        if (!sheetName) {
-          reject(new Error("No sheets found"));
-          return;
-        }
+    for (const row of dataRows) {
+      if (row[0] && row[1]) {
+        // Name and strength are required
+        const name = String(row[0]).trim();
+        const baseStrength = Number(row[1]) || 0;
+        const position = (row[2] as Position) || undefined;
 
-        const worksheet = workbook.Sheets[sheetName];
-        if (!worksheet) {
-          reject(new Error("Sheet not found"));
-          return;
-        }
+        let strengths: number[] = [];
 
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, {
-          header: 1,
-        }) as any[][];
-
-        // Skip header row
-        const excelData = jsonData.slice(1);
-        const players: Player[] = [];
-
-        for (const row of excelData) {
-          if (row[0] && row[1]) {
-            // Name and strength are required
-            let strengths: number[] = [];
-
-            // Collect additional strength values from column D onwards
-            for (let i = 3; i < row.length; i++) {
-              if (typeof row[i] === "number" && row[i] > 0) {
-                strengths.push(row[i]);
-              }
-            }
-
-            // Calculate final strength
-            let finalStrength: number;
-            if (strengths.length > 0) {
-              finalStrength = Calculator.getWeightedAvgStrength(strengths);
-            } else {
-              finalStrength = Number(row[1]) || 0;
-            }
-
-            const player = new Player(
-              String(row[0]).trim(),
-              finalStrength,
-              (row[2] as Position) || undefined
-            );
-
-            players.push(player);
+        // Collect additional strength values from column D onwards (index 3+)
+        for (let i = 3; i < row.length; i++) {
+          const value = Number(row[i]);
+          if (!isNaN(value) && value > 0) {
+            strengths.push(value);
           }
         }
 
-        resolve(players);
-      } catch (error) {
-        reject(error);
-      }
-    };
+        // Calculate final strength
+        let finalStrength: number;
+        if (strengths.length > 0) {
+          finalStrength = Calculator.getWeightedAvgStrength(strengths);
+        } else {
+          finalStrength = baseStrength;
+        }
 
-    reader.onerror = () => reject(new Error("File reading failed"));
-    reader.readAsBinaryString(file);
-  });
+        const player = new Player(name, finalStrength, position);
+        players.push(player);
+      }
+    }
+
+    return players;
+  } catch (error) {
+    console.error("Error parsing Excel file:", error);
+    throw new Error("Failed to parse Excel file. Please check the format.");
+  }
 };
 </script>

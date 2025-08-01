@@ -8,5 +8,21 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        external: [],
+      },
+    },
+    optimizeDeps: {
+      include: ["read-excel-file"],
+    },
+  },
+
+  nitro: {
+    esbuild: {
+      options: {
+        target: "es2020",
+      },
+    },
   },
 });

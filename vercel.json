@@ -1,0 +1,13 @@
+{
+  "functions": {
+    ".output/server/index.mjs": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/.output/server/index.mjs"
+    }
+  ]
+}
