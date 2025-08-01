@@ -19,6 +19,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    preset: "vercel",
     esbuild: {
       options: {
         target: "es2020",
