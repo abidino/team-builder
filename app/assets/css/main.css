@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* Custom responsive utilities */
+.container {
+  @apply mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Smooth transitions for better UX */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

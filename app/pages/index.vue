@@ -1,0 +1,95 @@
+<template>
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <!-- GitHub Issues Link -->
+    <div class="absolute top-4 right-4 z-10">
+      <a
+        href="https://github.com/abidino/team-builder/issues"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg shadow-sm transition-all duration-200 border border-gray-200/50"
+      >
+        <Icon name="github" class="w-4 h-4" />
+        <span class="hidden sm:inline text-sm font-medium">Report Issue</span>
+        <span class="sm:hidden text-sm font-medium">Issues</span>
+      </a>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+      <!-- Header Section -->
+      <PageHeader
+        title="Team Builder"
+        subtitle="Create balanced teams with ease"
+        class="mb-8"
+      />
+
+      <!-- Main Content -->
+      <div class="grid gap-8">
+        <!-- Player Management Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <SectionHeader
+            title="Player Management"
+            description="Add players and manage their stats"
+            class="mb-6"
+          />
+
+          <PlayerManagement
+            :players="players"
+            :selected-player="selectedPlayer"
+            @update:players="players = $event"
+            @update:selected-player="selectedPlayer = $event"
+            @build-teams="handleBuildTeams"
+          />
+        </div>
+
+        <!-- Teams Display Section -->
+        <div v-if="teams.length > 0" class="bg-white rounded-xl shadow-lg p-6">
+          <SectionHeader
+            title="Generated Teams"
+            description="Balanced teams based on player strengths"
+            class="mb-6"
+          />
+
+          <TeamDisplay :teams="teams" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Teams -->
+    <TeamModal
+      :visible="showTeamsModal"
+      :teams="teams"
+      @update:visible="showTeamsModal = $event"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { Player, Team } from "~/types";
+import { TeamBuilderService } from "~/services";
+
+// Page Meta
+useHead({
+  title: "Team Builder - Create Balanced Teams",
+  meta: [
+    {
+      name: "description",
+      content: "Create balanced teams with our intelligent team builder tool",
+    },
+  ],
+});
+
+// Reactive Data
+const players = ref<Player[]>([]);
+const teams = ref<Team[]>([]);
+const selectedPlayer = ref<string>("");
+const showTeamsModal = ref(false);
+
+// Methods
+const handleBuildTeams = () => {
+  if (players.value.length >= 10 && players.value.length % 2 === 0) {
+    teams.value = TeamBuilderService.buildTeams(players.value);
+    showTeamsModal.value = true;
+  }
+};
+</script>
