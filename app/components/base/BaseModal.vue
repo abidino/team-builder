@@ -1,25 +1,27 @@
 <template>
   <Teleport to="body">
     <Transition
-      enter-active-class="transition-opacity duration-300"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-300"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100"
+      leave-active-class="transition-all duration-200 ease-in"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="opacity-0 scale-95"
     >
       <div
         v-if="visible"
         class="fixed inset-0 z-50 flex items-center justify-center p-4"
         @click="handleBackdropClick"
       >
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <!-- Backdrop with Gradient Glassmorphism -->
+        <div
+          class="absolute inset-0 backdrop-blur-md bg-gradient-to-br from-blue-500/15 to-indigo-600/20"
+        ></div>
 
         <!-- Modal Content -->
         <div
           :class="modalClasses"
-          class="relative bg-white rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto"
+          class="relative bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 max-h-[90vh] overflow-y-auto"
           @click.stop
         >
           <!-- Header -->
