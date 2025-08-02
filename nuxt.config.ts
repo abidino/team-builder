@@ -8,20 +8,27 @@ export default defineNuxtConfig({
 
   components: {
     dirs: [
-      "~/components/Base",
-      "~/components/UI",
-      "~/components/Player",
-      "~/components/Team",
-      "~/components/Utilities",
+      {
+        path: "~/components/Base",
+        prefix: "Base",
+      },
+      {
+        path: "~/components/UI",
+        prefix: "",
+      },
+      {
+        path: "~/components/Player",
+        prefix: "",
+      },
+      {
+        path: "~/components/Team",
+        prefix: "",
+      },
+      {
+        path: "~/components/Utilities",
+        prefix: "",
+      },
     ],
-  },
-
-  ssr: true,
-
-  debug: process.env.NODE_ENV === "development",
-
-  experimental: {
-    payloadExtraction: false,
   },
 
   vite: {
@@ -38,12 +45,10 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: "vercel",
-    experimental: {
-      wasm: true,
+    esbuild: {
+      options: {
+        target: "es2020",
+      },
     },
-  },
-
-  build: {
-    transpile: [],
   },
 });
