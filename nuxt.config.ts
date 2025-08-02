@@ -6,6 +6,31 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
 
+  components: {
+    dirs: [
+      {
+        path: "~/components/Base",
+        prefix: "Base",
+      },
+      {
+        path: "~/components/UI",
+        prefix: "",
+      },
+      {
+        path: "~/components/Player",
+        prefix: "",
+      },
+      {
+        path: "~/components/Team",
+        prefix: "",
+      },
+      {
+        path: "~/components/Utilities",
+        prefix: "",
+      },
+    ],
+  },
+
   vite: {
     plugins: [tailwindcss()],
     build: {
