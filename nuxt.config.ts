@@ -6,13 +6,23 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
 
-  components: [
-    "~/components/Base",
-    "~/components/UI",
-    "~/components/Player",
-    "~/components/Team",
-    "~/components/Utilities",
-  ],
+  components: {
+    dirs: [
+      "~/components/Base",
+      "~/components/UI",
+      "~/components/Player",
+      "~/components/Team",
+      "~/components/Utilities",
+    ],
+  },
+
+  ssr: true,
+
+  debug: process.env.NODE_ENV === "development",
+
+  experimental: {
+    payloadExtraction: false,
+  },
 
   vite: {
     plugins: [tailwindcss()],
@@ -28,5 +38,12 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: "vercel",
+    experimental: {
+      wasm: true,
+    },
+  },
+
+  build: {
+    transpile: [],
   },
 });
