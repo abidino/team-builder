@@ -1,11 +1,11 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
     <!-- GitHub Issues Link & Audio Control -->
-    <div class="absolute top-4 right-4 z-10 flex items-center gap-3">
+    <div class="absolute top-4 right-4 z-10 flex items-center gap-2 sm:gap-3">
       <!-- Audio Control Button -->
       <button
         @click="toggleMute"
-        class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-gray-700 hover:text-gray-900 px-3 py-2 rounded-lg shadow-sm transition-all duration-200 border border-gray-200/50"
+        class="inline-flex items-center justify-center bg-white/80 backdrop-blur-sm hover:bg-white/90 text-gray-700 hover:text-gray-900 w-10 h-10 sm:w-auto sm:h-auto sm:px-3 sm:py-2 rounded-lg shadow-sm transition-all duration-200 border border-gray-200/50"
         :title="isMuted ? 'Enable Sound' : 'Disable Sound'"
       >
         <Icon :name="isMuted ? 'volume-x' : 'volume-2'" class="w-4 h-4" />
@@ -16,11 +16,13 @@
         href="https://github.com/abidino/team-builder/issues"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg shadow-sm transition-all duration-200 border border-gray-200/50"
+        class="inline-flex items-center justify-center bg-white/80 backdrop-blur-sm hover:bg-white/90 text-gray-700 hover:text-gray-900 w-10 h-10 sm:w-auto sm:h-auto sm:px-4 sm:py-2 rounded-lg shadow-sm transition-all duration-200 border border-gray-200/50"
+        :title="'Report Issue'"
       >
         <Icon name="github" class="w-4 h-4" />
-        <span class="hidden sm:inline text-sm font-medium">Report Issue</span>
-        <span class="sm:hidden text-sm font-medium">Issues</span>
+        <span class="hidden sm:inline text-sm font-medium ml-2"
+          >Report Issue</span
+        >
       </a>
     </div>
 
@@ -29,7 +31,7 @@
       <PageHeader
         title="Team Builder"
         subtitle="Create balanced teams with ease"
-        class="mb-8"
+        class="mb-8 mt-16 sm:mt-8"
       />
 
       <!-- Main Content -->
