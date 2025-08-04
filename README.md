@@ -1,5 +1,11 @@
 # Team Builder - Nuxt 4 Application
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Nuxt](https://img.shields.io/badge/Nuxt-4.0.2-00DC82.svg)](https://nuxt.com/)
+[![Vue](https://img.shields.io/badge/Vue.js-3-4FC08D.svg)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6.svg)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC.svg)](https://tailwindcss.com/)
+
 A modern, responsive team builder application built with Nuxt 4, Vue 3, and Tailwind CSS. Create balanced teams with intelligent player distribution and strength-based algorithms.
 
 ## ✨ Features
@@ -125,8 +131,8 @@ bun run dev
 
 When importing players from Excel, use this format:
 
-| Column A    | Column B        | Column C            | Column D+            |
-| ----------- | --------------- | ------------------- | -------------------- |
+| Column A    | Column B       | Column C            | Column D+            |
+| ----------- | -------------- | ------------------- | -------------------- |
 | Player Name | Arrived Status | Position (Optional) | Additional Strengths |
 
 - **Column A**: Player name (required)
@@ -218,6 +224,36 @@ The application uses a cohesive design system:
 - **Spacing**: Consistent spacing using Tailwind's scale
 - **Shadows**: Subtle shadows for depth and layering
 - **Animations**: Smooth transitions for better UX
+
+## 🤝 Contributing
+
+We welcome contributions from everyone! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+
+- How to submit bug reports and feature requests
+- Development setup and workflow
+- Code style and best practices
+- Pull request process
+
+### Quick Start for Contributors
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and test thoroughly
+4. Commit your changes: `git commit -m 'Add amazing feature'`
+5. Push to the branch: `git push origin feature/amazing-feature`
+6. Open a Pull Request
+
+**Note**: All changes to the `main` branch require at least one pull request review and code owner approval.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [Nuxt 4](https://nuxt.com/) and [Vue 3](https://vuejs.org/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Icons from [Lucide](https://lucide.dev/)
 
 ---
 
