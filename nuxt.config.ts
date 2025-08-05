@@ -5,6 +5,15 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
 
+  runtimeConfig: {
+    hfApiKey: process.env.NUXT_HF_API_KEY,
+    openrouterApiKey: process.env.NUXT_OPENROUTER_API_KEY,
+    ollamaUrl: process.env.NUXT_OLLAMA_URL,
+    public: {
+      // Public keys that can be exposed to client-side
+    },
+  },
+
   components: [
     {
       path: "~/components/Base",
