@@ -5,8 +5,9 @@
       :show-build-teams="canBuildTeams"
       :show-delete="!!selectedPlayer"
       :show-edit="!!selectedPlayer"
+      :is-building="isBuilding"
       @add-player="showAddModal = true"
-      @build-teams="$emit('buildTeams')"
+      @build-teams="handleBuildTeams"
       @delete-player="handleDeletePlayer"
       @edit-player="handleEditPlayer"
     />
@@ -45,12 +46,13 @@ import { Player } from "~/types";
 interface Props {
   players: Player[];
   selectedPlayer: string;
+  isBuilding?: boolean;
 }
 
 interface Emits {
   (e: "update:players", players: Player[]): void;
   (e: "update:selectedPlayer", player: string): void;
-  (e: "buildTeams"): void;
+  (e: "buildTeams", useAI: boolean, provider?: string): void;
 }
 
 const props = defineProps<Props>();
@@ -71,6 +73,10 @@ const handleAddPlayer = (player: Player) => {
   const updatedPlayers = [...props.players, player];
   emit("update:players", updatedPlayers);
   showAddModal.value = false;
+};
+
+const handleBuildTeams = (useAI: boolean, provider?: string) => {
+  emit("buildTeams", useAI, provider);
 };
 
 const handleImportPlayers = (players: Player[]) => {
