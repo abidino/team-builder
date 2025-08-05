@@ -131,14 +131,20 @@ const toggleMute = () => {
 };
 
 // Methods
-const handleBuildTeams = async () => {
+const handleBuildTeams = async (useAI: boolean) => {
   if (players.value.length >= 10 && players.value.length % 2 === 0) {
     try {
-      console.log("🤖 Trying AI team builder...");
-      teams.value = await AITeamBuilderService.buildTeams(players.value);
-      console.log("✅ AI team builder succeeded!");
+      if (useAI) {
+        console.log("🤖 Using AI team builder...");
+        teams.value = await AITeamBuilderService.buildTeams(players.value);
+        console.log("✅ AI team builder succeeded!");
+      } else {
+        console.log("⚡ Using normal team builder...");
+        teams.value = TeamBuilderService.buildTeams(players.value);
+        console.log("✅ Normal team builder succeeded!");
+      }
     } catch (error) {
-      console.log("❌ AI failed, using normal team builder:", error);
+      console.log("❌ Team building failed, trying fallback:", error);
       teams.value = TeamBuilderService.buildTeams(players.value);
     }
     showTeamsModal.value = true;
