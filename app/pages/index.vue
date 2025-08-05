@@ -47,6 +47,7 @@
           <PlayerManagement
             :players="players"
             :selected-player="selectedPlayer"
+            :is-building="isBuilding"
             @update:players="players = $event"
             @update:selected-player="selectedPlayer = $event"
             @build-teams="handleBuildTeams"
@@ -98,6 +99,7 @@ const selectedPlayer = ref<string>("");
 const showTeamsModal = ref(false);
 const backgroundAudio = ref<HTMLAudioElement | null>(null);
 const isMuted = ref(false);
+const isBuilding = ref(false);
 
 // Audio Management
 const playBackgroundSound = () => {
@@ -133,6 +135,7 @@ const toggleMute = () => {
 // Methods
 const handleBuildTeams = async (useAI: boolean) => {
   if (players.value.length >= 10 && players.value.length % 2 === 0) {
+    isBuilding.value = true;
     try {
       if (useAI) {
         console.log("🤖 Using AI team builder...");
@@ -146,6 +149,8 @@ const handleBuildTeams = async (useAI: boolean) => {
     } catch (error) {
       console.log("❌ Team building failed, trying fallback:", error);
       teams.value = TeamBuilderService.buildTeams(players.value);
+    } finally {
+      isBuilding.value = false;
     }
     showTeamsModal.value = true;
     playBackgroundSound(); // Start audio when modal opens

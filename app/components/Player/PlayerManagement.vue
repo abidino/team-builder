@@ -5,6 +5,7 @@
       :show-build-teams="canBuildTeams"
       :show-delete="!!selectedPlayer"
       :show-edit="!!selectedPlayer"
+      :is-building="isBuilding"
       @add-player="showAddModal = true"
       @build-teams="handleBuildTeams"
       @delete-player="handleDeletePlayer"
@@ -45,6 +46,7 @@ import { Player } from "~/types";
 interface Props {
   players: Player[];
   selectedPlayer: string;
+  isBuilding?: boolean;
 }
 
 interface Emits {
