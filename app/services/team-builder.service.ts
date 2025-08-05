@@ -1,15 +1,15 @@
-import { Player, Position, Team } from '../types';
-import { TeamBuilderUtil } from '../utils';
+import { Player, Position, Team } from "../types";
+import { TeamBuilderUtil } from "../utils";
 
 export class TeamBuilderService {
-  private static differenceThreshold = 2;
+  private static differenceThreshold = 0.5;
 
   static buildTeams(players: Player[]): Team[] {
     const _players = [...players];
     const teams: Team[] = [];
 
-    const team1: Team = new Team('Team 1', []);
-    const team2: Team = new Team('Team 2', []);
+    const team1: Team = new Team("Team 1", []);
+    const team2: Team = new Team("Team 2", []);
 
     let firstTeamPlayers: Player[] = [];
     let secondTeamPlayers: Player[] = [];
@@ -45,7 +45,6 @@ export class TeamBuilderService {
         TeamBuilderUtil.calculateTotalStrength(secondTeamPlayers)
     );
 
-    console.log(`Difference: ` + diff);
     if (diff <= TeamBuilderService.differenceThreshold) {
       teams.push(team1, team2);
       return teams;

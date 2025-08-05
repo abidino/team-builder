@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from "vue";
 import { Player, Team } from "~/types";
-import { TeamBuilderService } from "~/services";
+import { TeamBuilderService, AITeamBuilderService } from "~/services";
 
 // Page Meta
 useHead({
@@ -131,9 +131,16 @@ const toggleMute = () => {
 };
 
 // Methods
-const handleBuildTeams = () => {
+const handleBuildTeams = async () => {
   if (players.value.length >= 10 && players.value.length % 2 === 0) {
-    teams.value = TeamBuilderService.buildTeams(players.value);
+    try {
+      console.log("🤖 Trying AI team builder...");
+      teams.value = await AITeamBuilderService.buildTeams(players.value);
+      console.log("✅ AI team builder succeeded!");
+    } catch (error) {
+      console.log("❌ AI failed, using normal team builder:", error);
+      teams.value = TeamBuilderService.buildTeams(players.value);
+    }
     showTeamsModal.value = true;
     playBackgroundSound(); // Start audio when modal opens
   }
