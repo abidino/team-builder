@@ -1,15 +1,29 @@
 import { Player, Team } from "../types";
 
 export class AITeamBuilderService {
-  static async buildTeams(players: Player[]): Promise<Team[]> {
+  static async buildTeams(
+    players: Player[],
+    provider: string = "openrouter",
+    options?: {
+      model?: string;
+      temperature?: number;
+      maxTokens?: number;
+    }
+  ): Promise<Team[]> {
     try {
       const response = (await $fetch("/api/ai-teams", {
         method: "POST",
         body: {
           players: players.map((p) => ({ name: p.name, strength: p.strength })),
-          provider: "openrouter",
+          provider,
+          ...options,
         },
-      })) as { success: boolean; response?: string; error?: string };
+      })) as {
+        success: boolean;
+        response?: string;
+        error?: string;
+        provider?: string;
+      };
 
       if (!response.success) {
         throw new Error(response.error || "AI API failed");
@@ -19,6 +33,10 @@ export class AITeamBuilderService {
         throw new Error("No response from AI API");
       }
 
+      console.log(
+        `✅ AI Response from ${response.provider}:`,
+        response.response
+      );
       return this.parseResponse(response.response, players);
     } catch (error) {
       console.error("AI Team Builder failed:", error);
