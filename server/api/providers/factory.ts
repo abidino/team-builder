@@ -1,5 +1,6 @@
 import type { AIProvider } from "./types";
 import { OpenRouterProvider } from "./openrouter";
+import { AIMLAPIProvider } from "./aimlapi";
 
 // Gelecekte eklenecek provider'lar için import'lar
 // import { ChatGPTProvider } from './chatgpt';
@@ -10,6 +11,9 @@ export function createAIProvider(providerName: string): AIProvider {
   switch (providerName.toLowerCase()) {
     case "openrouter":
       return new OpenRouterProvider();
+
+    case "aimlapi":
+      return new AIMLAPIProvider();
 
     // Gelecekte eklenecek provider'lar
     // case 'chatgpt':
@@ -29,6 +33,7 @@ export function createAIProvider(providerName: string): AIProvider {
 export function getAvailableProviders(): string[] {
   return [
     "openrouter",
+    "aimlapi",
     // Gelecekte: 'chatgpt', 'gemini', 'deepseek'
   ];
 }

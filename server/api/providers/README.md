@@ -163,15 +163,14 @@ maxTokens: 1000,
 ## 📋 Şu An Aktif Olan Provider'lar
 
 - ✅ **OpenRouter** - Mistral 7B Instruct (Free)
+- ✅ **AIML API** - GPT-4o-mini (Free)
 
 ## 🔄 Gelecekte Eklenecek Provider'lar
 
 - 🔄 **DeepSeek** - Template hazır
 - 🔄 **ChatGPT** - Template hazır
 - 🔄 **Gemini** - Template gerekiyor
-- 🔄 **Claude** - Template gerekiyor
-
-## 🛠️ Template Dosyalar
+- 🔄 **Claude** - Template gerekiyor## 🛠️ Template Dosyalar
 
 \`\*.template.ts\` dosyaları hazır template'ler içerir. Aktif hale getirmek için:
 

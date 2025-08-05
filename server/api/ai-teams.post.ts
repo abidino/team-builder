@@ -25,6 +25,15 @@ export default defineEventHandler(async (event) => {
       maxTokens,
     };
 
+    // Debug: API key kontrolü
+    console.log(
+      `🔑 Provider: ${provider}, API Key: ${
+        providerConfig.apiKey
+          ? `${providerConfig.apiKey.substring(0, 8)}...`
+          : "MISSING"
+      }`
+    );
+
     // AI provider'ı ile team building yap
     const aiResponse = await aiProvider.buildTeams(players, providerConfig);
 
@@ -49,6 +58,9 @@ function getApiKey(provider: string, config: any): string {
   switch (provider.toLowerCase()) {
     case "openrouter":
       return config.openrouterApiKey;
+
+    case "aimlapi":
+      return config.aimlapiApiKey;
 
     // Gelecekte eklenecek provider'lar için API key'ler
     // case 'chatgpt':

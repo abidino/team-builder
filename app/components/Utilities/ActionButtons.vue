@@ -101,6 +101,7 @@
           class="px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <option value="openrouter">OpenRouter (Mistral-7B)</option>
+          <option value="aimlapi">AIML API (Gemma-3-4B)</option>
           <!-- Future providers will be added here -->
           <!-- <option value="deepseek">DeepSeek</option> -->
           <!-- <option value="chatgpt">ChatGPT</option> -->
