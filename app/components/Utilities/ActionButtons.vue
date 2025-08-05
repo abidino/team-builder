@@ -72,8 +72,8 @@
       </BaseButton>
     </div>
 
-    <!-- AI Toggle -->
-    <div v-if="showBuildTeams" class="flex items-center gap-3">
+    <!-- AI Toggle & Provider Selection -->
+    <div v-if="showBuildTeams" class="space-y-3">
       <label
         class="flex items-center gap-2 text-sm text-gray-600"
         :class="{ 'opacity-50': isBuilding }"
@@ -87,6 +87,26 @@
         />
         Build teams with AI
       </label>
+
+      <!-- AI Provider Selection -->
+      <div
+        v-if="aiEnabled"
+        class="ml-6 flex items-center gap-3"
+        :class="{ 'opacity-50': isBuilding }"
+      >
+        <label class="text-sm text-gray-600 font-medium">Provider:</label>
+        <select
+          v-model="selectedProvider"
+          :disabled="isBuilding"
+          class="px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <option value="openrouter">OpenRouter (Mistral-7B)</option>
+          <!-- Future providers will be added here -->
+          <!-- <option value="deepseek">DeepSeek</option> -->
+          <!-- <option value="chatgpt">ChatGPT</option> -->
+          <!-- <option value="gemini">Gemini</option> -->
+        </select>
+      </div>
     </div>
   </div>
 </template>
@@ -101,7 +121,7 @@ interface Props {
 
 interface Emits {
   (e: "addPlayer"): void;
-  (e: "buildTeams", useAI: boolean): void;
+  (e: "buildTeams", useAI: boolean, provider?: string): void;
   (e: "editPlayer"): void;
   (e: "deletePlayer"): void;
 }
@@ -110,6 +130,7 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const aiEnabled = ref(false);
+const selectedProvider = ref("openrouter");
 
 const toggleAI = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -117,6 +138,10 @@ const toggleAI = (event: Event) => {
 };
 
 const handleBuildTeams = () => {
-  emit("buildTeams", aiEnabled.value);
+  emit(
+    "buildTeams",
+    aiEnabled.value,
+    aiEnabled.value ? selectedProvider.value : undefined
+  );
 };
 </script>

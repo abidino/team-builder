@@ -52,7 +52,7 @@ interface Props {
 interface Emits {
   (e: "update:players", players: Player[]): void;
   (e: "update:selectedPlayer", player: string): void;
-  (e: "buildTeams", useAI: boolean): void;
+  (e: "buildTeams", useAI: boolean, provider?: string): void;
 }
 
 const props = defineProps<Props>();
@@ -75,8 +75,8 @@ const handleAddPlayer = (player: Player) => {
   showAddModal.value = false;
 };
 
-const handleBuildTeams = (useAI: boolean) => {
-  emit("buildTeams", useAI);
+const handleBuildTeams = (useAI: boolean, provider?: string) => {
+  emit("buildTeams", useAI, provider);
 };
 
 const handleImportPlayers = (players: Player[]) => {

@@ -73,6 +73,64 @@
       :teams="teams"
       @update:visible="handleModalVisibilityChange"
     />
+
+    <!-- Error Modal -->
+    <div
+      v-if="showErrorModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    >
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
+        <!-- Close Button -->
+        <button
+          @click="showErrorModal = false"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          <Icon name="x" class="w-6 h-6" />
+        </button>
+
+        <!-- Error Content -->
+        <div class="pr-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center"
+            >
+              <Icon name="alert-triangle" class="w-5 h-5 text-red-600" />
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">
+                AI Provider Error
+              </h3>
+              <p class="text-sm text-gray-600">
+                {{ errorProvider }} failed to build teams
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <p class="text-sm text-gray-700 leading-relaxed">
+              {{ errorMessage }}
+            </p>
+          </div>
+
+          <div class="flex gap-3 justify-end">
+            <BaseButton
+              @click="showErrorModal = false"
+              variant="secondary"
+              class="px-4 py-2"
+            >
+              Close
+            </BaseButton>
+            <BaseButton
+              @click="retryWithNormalBuilder"
+              variant="primary"
+              class="px-4 py-2"
+            >
+              Use Normal Builder
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -100,6 +158,9 @@ const showTeamsModal = ref(false);
 const backgroundAudio = ref<HTMLAudioElement | null>(null);
 const isMuted = ref(false);
 const isBuilding = ref(false);
+const showErrorModal = ref(false);
+const errorMessage = ref("");
+const errorProvider = ref("");
 
 // Audio Management
 const playBackgroundSound = () => {
@@ -133,27 +194,48 @@ const toggleMute = () => {
 };
 
 // Methods
-const handleBuildTeams = async (useAI: boolean) => {
+const handleBuildTeams = async (useAI: boolean, provider?: string) => {
   if (players.value.length >= 10 && players.value.length % 2 === 0) {
     isBuilding.value = true;
     try {
-      if (useAI) {
-        console.log("🤖 Using AI team builder...");
-        teams.value = await AITeamBuilderService.buildTeams(players.value);
-        console.log("✅ AI team builder succeeded!");
+      if (useAI && provider) {
+        console.log(`🤖 Using AI team builder with ${provider}...`);
+        teams.value = await AITeamBuilderService.buildTeams(
+          players.value,
+          provider
+        );
+        console.log(`✅ AI team builder (${provider}) succeeded!`);
       } else {
         console.log("⚡ Using normal team builder...");
         teams.value = TeamBuilderService.buildTeams(players.value);
         console.log("✅ Normal team builder succeeded!");
       }
+
+      // Success - show teams modal
+      showTeamsModal.value = true;
+      playBackgroundSound();
     } catch (error) {
-      console.log("❌ Team building failed, trying fallback:", error);
-      teams.value = TeamBuilderService.buildTeams(players.value);
+      console.log(
+        `❌ Team building failed with ${provider || "normal"}:`,
+        error
+      );
+
+      if (useAI && provider) {
+        // AI failed - show error modal
+        errorProvider.value = provider;
+        errorMessage.value =
+          error instanceof Error ? error.message : "Unknown AI error";
+        showErrorModal.value = true;
+      } else {
+        // Normal team builder failed - this shouldn't happen, but fallback
+        console.error("Critical error: Normal team builder failed");
+        errorProvider.value = "Normal";
+        errorMessage.value = "Unexpected error in team building";
+        showErrorModal.value = true;
+      }
     } finally {
       isBuilding.value = false;
     }
-    showTeamsModal.value = true;
-    playBackgroundSound(); // Start audio when modal opens
   }
 };
 
@@ -167,6 +249,11 @@ const handleModalVisibilityChange = (visible: boolean) => {
   if (!visible) {
     stopBackgroundSound(); // Stop audio when modal is closed
   }
+};
+
+const retryWithNormalBuilder = async () => {
+  showErrorModal.value = false;
+  await handleBuildTeams(false); // Use normal team builder
 };
 
 // Cleanup on unmount
