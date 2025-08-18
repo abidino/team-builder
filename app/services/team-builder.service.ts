@@ -3,7 +3,7 @@ import { TeamBuilderUtil } from "../utils";
 
 export class TeamBuilderService {
   private static differenceThreshold = 0.5;
-  private static standardDeviationThreshold = 1.0; // Standart sapma fark eşiği
+  private static standardDeviationThreshold = 1.0;
 
   static buildTeams(players: Player[]): Team[] {
     const _players = [...players];
@@ -46,7 +46,6 @@ export class TeamBuilderService {
         TeamBuilderUtil.calculateTotalStrength(secondTeamPlayers)
     );
 
-    // Standart sapma kontrolü - daha dengeli dağılım için
     const team1StandardDeviation =
       TeamBuilderUtil.calculateStandardDeviation(firstTeamPlayers);
     const team2StandardDeviation =
@@ -55,10 +54,23 @@ export class TeamBuilderService {
       team1StandardDeviation - team2StandardDeviation
     );
 
-    // Hem güç farkı hem de standart sapma farkı kabul edilebilir seviyede olmalı
+    const totalForwards = players.filter(
+      (p) => p.preferredPosition === Position.Forward
+    ).length;
+    const team1Forwards = firstTeamPlayers.filter(
+      (p) => p.preferredPosition === Position.Forward
+    ).length;
+    const team2Forwards = secondTeamPlayers.filter(
+      (p) => p.preferredPosition === Position.Forward
+    ).length;
+
+    const forwardDistributionValid =
+      totalForwards < 2 || (team1Forwards >= 1 && team2Forwards >= 1);
+
     if (
       diff <= TeamBuilderService.differenceThreshold &&
-      standardDeviationDiff <= TeamBuilderService.standardDeviationThreshold
+      standardDeviationDiff <= TeamBuilderService.standardDeviationThreshold &&
+      forwardDistributionValid
     ) {
       teams.push(team1, team2);
       return teams;
