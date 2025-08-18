@@ -3,6 +3,7 @@ import { TeamBuilderUtil } from "../utils";
 
 export class TeamBuilderService {
   private static differenceThreshold = 0.5;
+  private static standardDeviationThreshold = 1.0; // Standart sapma fark eşiği
 
   static buildTeams(players: Player[]): Team[] {
     const _players = [...players];
@@ -45,7 +46,20 @@ export class TeamBuilderService {
         TeamBuilderUtil.calculateTotalStrength(secondTeamPlayers)
     );
 
-    if (diff <= TeamBuilderService.differenceThreshold) {
+    // Standart sapma kontrolü - daha dengeli dağılım için
+    const team1StandardDeviation =
+      TeamBuilderUtil.calculateStandardDeviation(firstTeamPlayers);
+    const team2StandardDeviation =
+      TeamBuilderUtil.calculateStandardDeviation(secondTeamPlayers);
+    const standardDeviationDiff = Math.abs(
+      team1StandardDeviation - team2StandardDeviation
+    );
+
+    // Hem güç farkı hem de standart sapma farkı kabul edilebilir seviyede olmalı
+    if (
+      diff <= TeamBuilderService.differenceThreshold &&
+      standardDeviationDiff <= TeamBuilderService.standardDeviationThreshold
+    ) {
       teams.push(team1, team2);
       return teams;
     }

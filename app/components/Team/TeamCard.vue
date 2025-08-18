@@ -16,7 +16,7 @@
     <!-- Players List -->
     <div class="space-y-3 mb-6">
       <PlayerCard
-        v-for="player in team.members"
+        v-for="player in sortedPlayersByPosition"
         :key="player.id"
         :player="player"
         class="bg-white shadow-sm"
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { Team } from "~/types";
+import { Team, Position } from "~/types";
 
 interface Props {
   team: Team;
@@ -56,5 +56,21 @@ const props = defineProps<Props>();
 const teamAverage = computed(() => {
   if (props.team.members.length === 0) return 0;
   return props.team.totalMemberStrength / props.team.members.length;
+});
+
+// Pozisyon sıralaması: GK -> DEF -> MID -> FWD
+const positionOrder = {
+  [Position.Goalkeeper]: 1,
+  [Position.Defender]: 2,
+  [Position.Midfielder]: 3,
+  [Position.Forward]: 4,
+};
+
+const sortedPlayersByPosition = computed(() => {
+  return [...props.team.members].sort((a, b) => {
+    const aOrder = positionOrder[a.preferredPosition as Position] || 5;
+    const bOrder = positionOrder[b.preferredPosition as Position] || 5;
+    return aOrder - bOrder;
+  });
 });
 </script>
